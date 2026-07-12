@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ollama --version)",
+      "Bash(ollama run *)",
+      "Bash(ollama list *)",
+      "Bash(nvidia-smi)",
+      "Bash(python -c \"from embedding import build_vectorstore; print\\('成功'\\)\")",
+      "Bash(python -c ' *)",
+      "Bash(python -c \"import langgraph_checkpoint; print\\(dir\\(langgraph_checkpoint\\)\\)\")",
+      "Bash(python -c \"from langgraph.checkpoint.redis import RedisSaver; print\\('OK'\\)\")",
+      "Bash(pip list *)",
+      "Bash(pip index *)",
+      "Bash(pip search *)",
+      "Bash(docker exec *)",
+      "Bash(docker stop *)",
+      "Bash(docker rm *)",
+      "Bash(docker run *)"
+    ]
+  }
+}
