@@ -98,26 +98,33 @@ http://localhost:8000/docs
 
 ## 多轮对话
 同一个 thread_id 共享会话记忆：
+```bash
 curl -X POST ... -d '{"question": "北京天气如何？", "thread_id": "user_1"}'
 curl -X POST ... -d '{"question": "那明天呢？", "thread_id": "user_1"}'
+```
 Agent 记得上一轮说的是北京
 
 ## 添加新工具
 1.在 tools/ 目录新建Python文件
 2.函数签名：def my_tool(state,resources):
 3.在 tools/registry.py 注册
+```python
 **tools/my_tool.py**
 def my_tool(state,resources):
     state["observation"] = "工具结果"
     return state
+```
 
+```python
 **tools/registry.py**
 TOOLS["my_tool"] = {
     "function": my_tool,
     "description": "工具描述"
 }
+```
 
 ## 项目结构
+```
 .
 ├── main.py                                     # 终端交互入口
 ├── api.py                                      # FastAPI HTTP 服务
@@ -139,6 +146,7 @@ TOOLS["my_tool"] = {
 │   ├── *.pdf                                   # 知识库 PDF
 │   ├── chroma_db/                              # ChromaDB 持久化文件
 └── requirements.txt
+```
 
 ## License
 MIT
