@@ -2,7 +2,7 @@
 基于 **LangGraph + ChromaDB + Redis + Ollama** 的本地React智能问答Agent
 
 ## 架构
-
+```
     用户输入（HTTP/终端）
             │
             ▼
@@ -30,6 +30,7 @@
 ├── web_search   网页搜索 (DuckDuckGo)
 └── calculator   数学计算
 Redis 会话记忆 ── 多轮对话上下文持久化
+```
 
 ## 特性
 
@@ -105,9 +106,9 @@ curl -X POST ... -d '{"question": "那明天呢？", "thread_id": "user_1"}'
 Agent 记得上一轮说的是北京
 
 ## 添加新工具
-1.在 tools/ 目录新建Python文件
-2.函数签名：def my_tool(state,resources):
-3.在 tools/registry.py 注册
+1. 在 tools/ 目录新建Python文件
+2. 函数签名：def my_tool(state,resources):
+3. 在 tools/registry.py 注册
 ```python
 **tools/my_tool.py**
 def my_tool(state,resources):
