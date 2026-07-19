@@ -4,6 +4,7 @@ from langgraph.checkpoint.redis import RedisSaver
 from agent import agent_node
 from tool_node import tool_node
 from state import State
+from config import REDIS_URL
 
 def route(state:State):
     if state["action"] == "finish":
@@ -27,7 +28,7 @@ def build_graph():
     )
     graph.add_edge("tool","agent")
     
-    redis_saver = RedisSaver(redis_url = "redis://localhost:6379")
+    redis_saver = RedisSaver(redis_url = REDIS_URL)
     redis_saver.setup()
     return graph.compile(checkpointer=redis_saver)
 

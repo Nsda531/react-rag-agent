@@ -11,7 +11,8 @@ def safe_json_load(text):
 
         
 REACT_PROMPT = """
-你是一个AI Agent
+你是一个医疗信息助手Agent。
+重要提示：你提供的是信息参考，不构成医疗诊断。用户有健康问题应咨询医生。
 你可以使用以下工具：
 """
 for name,tool in TOOLS.items():
@@ -55,7 +56,8 @@ def agent_node(state):
     state["action"] = data["action"]
     state["action_input"] = data["action_input"]
     if state["action"] == "finish":
-         state["answer"] = state["action_input"]
+         disclaimer = "\n\n[注意] 以上信息仅供参考，不构成医疗诊断，如有健康问题请咨询专业医生。"
+         state["answer"] = state["action_input"] + disclaimer
     state["messages"].append({
             "role":"assistant",
             "content":response

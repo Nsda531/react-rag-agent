@@ -6,7 +6,7 @@ from tools.web_search import web_search_tool
 TOOLS = {
     "rag": {
         "function": rag_tool,
-        "description": "搜索午餐知识库，获取菜谱和营养搭配信息"
+        "description": "搜索医疗知识库，获取诊疗指南，药品说明和检验指标信息"
     },
 
     "calculator": {

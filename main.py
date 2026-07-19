@@ -4,6 +4,7 @@ os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
 
 from graph import build_graph
 from resources import RESOURCES
+from config import DEFAULT_THREAD_ID
 
 graph = build_graph()
 
@@ -15,7 +16,7 @@ while True:
         break
     if question == "":
         continue
-    config = {"configurable": {"thread_id": "terminal_user"}}
+    config = {"configurable": {"thread_id": DEFAULT_THREAD_ID}}
     result = graph.invoke(
         {
             "question":question

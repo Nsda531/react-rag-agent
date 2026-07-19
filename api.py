@@ -5,10 +5,11 @@ os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
 from fastapi import FastAPI
 from pydantic import BaseModel
 from graph import build_graph
+from config import DEFAULT_THREAD_ID
 
 class Question(BaseModel):
     question: str
-    thread_id: str = "default"
+    thread_id: str = DEFAULT_THREAD_ID
 
 class AnswerResp(BaseModel):
     answer: str

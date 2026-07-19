@@ -1,5 +1,5 @@
 # ReAct RAG Agent
-基于 **LangGraph + ChromaDB + Redis + Ollama** 的本地React智能问答Agent
+基于 **LangGraph + ChromaDB + Redis + Ollama** 的本地React医疗信息智能问答Agent
 
 ## 架构
 ```
@@ -19,13 +19,13 @@
      ┌──────┼──────┐            │
      ▼             ▼            │
    ┌────┐      ┌──────┐         │
-   │END |      │ tool │─────────┘
+   │END │      │ tool │─────────┘
    └────┘      └──────┘  observation
    返回答案               带回 agent
             │
             ▼
 工具层 (registry 可插拔)
-├── rag          知识库检索 (ChromaDB)
+├── rag          医疗知识库检索 (ChromaDB)
 ├── weather      天气查询 (wttr.in)
 ├── web_search   网页搜索 (DuckDuckGo)
 └── calculator   数学计算
@@ -75,7 +75,7 @@ docker run -d --name redis-rag -p 6379:6379 redis/redis-stack:latest
 ```
 
 ### 2.准备知识库PDF
-将 PDF 文件放入 data/ 目录，默认读取 data/午餐科学搭配与食谱大全.pdf。
+将 PDF 或 TXT文件放入 data/ 目录,支持glob通配读取。当前示例：data/medical.txt
 
 ### 3.启动服务
 ```
@@ -91,7 +91,7 @@ python main.py
 # curl
 curl -X POST http://localhost:8000/ask \
   -H "Content-Type: application/json" \
-  -d '{"question": "午餐怎么搭配？", "thread_id": "user_1"}'
+  -d '{"question": "布洛芬是什么", "thread_id": "user_1"}'
 
 # 或访问 Swagger 页面
 http://localhost:8000/docs
@@ -129,6 +129,11 @@ TOOLS["my_tool"] = {
 .
 ├── main.py                                     # 终端交互入口
 ├── api.py                                      # FastAPI HTTP 服务
+├── config.py                                   # 全局配置      
+├── tests/
+│   ├── test_agent.py                           # agent 输出编码测试
+│   ├── test_llm.py                             # LLM HTTP 调用测试
+│   ├── test_config.py                          # 配置测试
 ├── agent.py                                    # ReAct Agent (prompt + 决策)
 ├── graph.py                                    # LangGraph 图谱编排
 ├── tool_node.py                                # 工具调度中心
@@ -139,7 +144,7 @@ TOOLS["my_tool"] = {
 ├── resources.py                                # 资源管理（懒加载知识库）
 ├── tools/
 │   ├── registry.py                             # 工具注册表
-│   ├── rag.py                                   # RAG检索工具
+│   ├── rag.py                                  # RAG检索工具
 │   ├── weather.py                              # 天气查询工具
 │   ├── web_search.py                           # 网页查询工具
 │   ├── calculator.py                           # 计算器工具

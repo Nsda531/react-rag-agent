@@ -1,27 +1,33 @@
 from pypdf import PdfReader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from sentence_transformers import SentenceTransformer
+from config import EMBEDDING_MODEL,CHROMA_DB_PATH,COLLECTION_NAME
 import chromadb
 import os
+import glob
 
 def build_vectorstore():
-    reader=PdfReader("data/午餐科学搭配与食谱大全.pdf")
     text = ""
-    for page in reader.pages:
-        text += page.extract_text()
+    for filepath in glob.glob("data/*.pdf"):
+        reader = PdfReader(filepath)
+        for page in reader.pages:
+            text += page.extract_text()
+    for filepath in glob.glob("data/*.txt"):
+        with open(filepath, "r", encoding = "utf-8") as f:
+            text += f.read()
     print("知识库加载完成")
     splitter=RecursiveCharacterTextSplitter(
-        chunk_size=200,
+        chunk_size=300,
         chunk_overlap=50
     )
     chunks=splitter.split_text(text)
     print("chunk已生成")
-    model=SentenceTransformer("all-MiniLM-L6-v2")
+    model=SentenceTransformer(EMBEDDING_MODEL)
 
     client = chromadb.PersistentClient(
-        path = os.path.join("data", "chroma_db")
+        path = CHROMA_DB_PATH
     )
-    collection_name = "lunch_knowledge"
+    collection_name = COLLECTION_NAME
 
     try:
         collection = client.get_collection(collection_name)
